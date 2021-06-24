@@ -20,7 +20,7 @@ options: {
     width: 1300,
     height: 450,
     wireframes: false,
-    background: 'rgb(210, 173, 151)'
+    background: 'rgb(166, 217, 147)'
 }
 });
 
@@ -36,67 +36,84 @@ options = {
 };
 
 //Create ground, left and right edges
-var ground = Bodies.rectangle(650, 450, 1300, 10, options),
+var ground = Bodies.rectangle(700, 440, 1400, 20, options),
 rightEdge = Bodies.rectangle(1290, 200, 30, 500, options),
 leftEdge = Bodies.rectangle(10, 200, 30, 500, options)
 
-// these static walls will not be rendered in this sprites example, see options
-var stack = Composites.stack(450, 20, 10, 6, 0, 0, function(x, y) {
-    if (Common.random() > 0.35) {
-        return Bodies.rectangle(x, y, 20, 20, {
+// Creating walls as sprites
+var wall1 =  Bodies.rectangle(420, 260, 20, 350, {
+    isStatic:true,
+    render: {
+        sprite: {
+            texture: 'images/wood.png',
+            xScale: 0.1,
+            yScale: 0.8,
+          
+        }
+    }
+}),
+wall2 =  Bodies.rectangle(820, 260, 20, 350, {
+    isStatic:true,
+    render: {
+        sprite: {
+            texture: 'images/wood.png',
+            xScale: 0.1,
+            yScale: 0.8,
+          
+        }
+    }
+});
+
+// rackets and balls
+var rackets = Composites.stack(450, 20, 6, 4, 0, 0, function(x, y) {
+        return Bodies.rectangle(x, y, 60, 10, {
             render: {
                 strokeStyle: '#ffffff',
                 sprite: {
-                    texture: 'images/pencil.png',
+                    texture: 'images/racket.png',
                     xScale: 0.5,
                     yScale: 0.5
                    
                 }
             }
-        });
-    } else {
-        return Bodies.circle(x, y, 20, {
+        })
+    });
+
+var balls = Composites.stack(450, 20, 7, 4, 0, 0, function(x, y) {
+        if (Common.random() > 0.5) {
+            return Bodies.circle(x, y, 30, {
             density: 0.0005,
             frictionAir: 0.06,
-            restitution: 0.3,
+            restitution: 0.8,
             friction: 0.01,
             render: {
                 sprite: {
-                    texture: 'images/eraser.png',
-                    xScale: 0.5,
-                    yScale: 0.5,
-                  
+                    texture: 'images/rugby.png',
+                    xScale: 0.3,
+                    yScale: 0.3,
                 }
             }
+        })
+    }
+    else{
+        return Bodies.circle(x, y, 20, {
+                density: 0.0005,
+                frictionAir: 0.06,
+                restitution: 0.8,
+                friction: 0.01,
+                render: {
+                    sprite: {
+                        texture: 'images/football.png',
+                        xScale: 0.1,
+                        yScale: 0.1,
+                    }
+                }
         });
     }
     });
 
-// Creating walls as sprites
-var leftWall =     Bodies.rectangle(200, 300, 10, 350, {
-    isStatic:true,
-    render: {
-        sprite: {
-            texture: 'images/wood.png',
-            xScale: 0.2,
-            yScale: 0.6,
-          
-        }
-    }
-}),
-rightWall = Bodies.rectangle(1000, 300, 20, 300, {
-    isStatic:true,
-    render: {
-        sprite: {
-            texture: 'images/wood.png',
-            xScale: 0.2,
-            yScale: 0.6,
-           
-        }
-    }
-});
 
-Composite.add(world, [stack, ground, rightEdge, leftEdge, leftWall, rightWall]);
+Composite.add(world, [rackets, balls, ground, rightEdge, leftEdge, wall1, wall2]);
 
 // add mouse control
 var mouse = Mouse.create(render.canvas),
