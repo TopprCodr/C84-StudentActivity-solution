@@ -112,7 +112,7 @@ var balls = Composites.stack(450, 20, 7, 4, 0, 0, function(x, y) {
     }
     });
 
-
+//Add composite bodies to the world
 Composite.add(world, [rackets, balls, ground, rightEdge, leftEdge, wall1, wall2]);
 
 // add mouse control
